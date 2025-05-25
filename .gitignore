@@ -1,0 +1,39 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# ASP.NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nupkg
+*.snupkg
+project.assets.json
+project.nuget.cache
+*.nuspec
+*.psmdcp
+*.cache
+
+# Rider (JetBrains)
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+
+# Others
+*.dbmdl
+*.pdb
+*.tmp
+*.bak

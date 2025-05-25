@@ -1,0 +1,35 @@
+﻿@MoviesBackend_HostAddress = http://localhost:5076
+
+GET {{MoviesBackend_HostAddress}}/api/movie
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/movie
+Content-Type: application/json
+
+{
+    "image": "https://gamespot.com/a/uploads/original/1557/15576725/3376450-infinity-war-poster1.jpg",
+    "title": "Avengers",
+    "type": "Action , Comedy",
+    "rating": "8.4"
+  }
+
+###
+
+@id=0
+DELETE {{MoviesBackend_HostAddress}}/api/movie/{{id}}
+
+###
+
+GET {{MoviesBackend_HostAddress}}/api/movie/{{id}}
+
+###
+
+PUT {{MoviesBackend_HostAddress}}/api/movie/{{id}}
+Content-Type: application/json
+
+{
+  //Movie
+}
+
+###
