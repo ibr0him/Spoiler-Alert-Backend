@@ -28,8 +28,8 @@
 ### Setup
 
 ```bash
-git clone https://github.com/your-username/spoiler-alert-backend.git
-cd spoiler-alert-backend
+git clone https://github.com/ibr0him/Spoiler-Alert-Backend
+cd Spoiler-Alert-Backend
 dotnet restore
 dotnet ef database update
 dotnet run
