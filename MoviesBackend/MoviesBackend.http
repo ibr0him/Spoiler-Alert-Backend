@@ -1,6 +1,12 @@
 ﻿@MoviesBackend_HostAddress = http://localhost:5076
 
+###------------------------> Movies
 GET {{MoviesBackend_HostAddress}}/api/movie
+
+###
+
+@id=1
+GET {{MoviesBackend_HostAddress}}/api/movie/{{id}}
 
 ###
 
@@ -8,20 +14,12 @@ POST {{MoviesBackend_HostAddress}}/api/movie
 Content-Type: application/json
 
 {
-    "image": "https://gamespot.com/a/uploads/original/1557/15576725/3376450-infinity-war-poster1.jpg",
-    "title": "Avengers",
-    "type": "Action , Comedy",
-    "rating": "8.4"
-  }
+  //Movie
+}
 
 ###
 
-@id=0
 DELETE {{MoviesBackend_HostAddress}}/api/movie/{{id}}
-
-###
-
-GET {{MoviesBackend_HostAddress}}/api/movie/{{id}}
 
 ###
 
@@ -32,4 +30,137 @@ Content-Type: application/json
   //Movie
 }
 
+###------------------------> Cast
+
+@Id=2
+GET {{MoviesBackend_HostAddress}}/api/cast/{{Id}}
+
 ###
+
+PUT {{MoviesBackend_HostAddress}}/api/cast/{{id}}
+Content-Type: application/json
+
+{
+  //Cast
+}
+
+###
+
+DELETE {{MoviesBackend_HostAddress}}/api/cast/{{id}}
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/cast
+Content-Type: application/json
+
+{
+  //Cast
+}
+
+###------------------------> Companies
+@Id=1
+GET {{MoviesBackend_HostAddress}}/api/companies/{{Id}}
+
+###
+
+PUT {{MoviesBackend_HostAddress}}/api/companies/{{id}}
+Content-Type: application/json
+
+{
+  //ProductionCompaines
+}
+
+###
+
+DELETE {{MoviesBackend_HostAddress}}/api/companies/{{id}}
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/companies
+Content-Type: application/json
+
+{
+  //ProductionCompaines
+}
+
+###------------------------> Reviews
+
+GET {{MoviesBackend_HostAddress}}/api/Reviews
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/reviews
+Content-Type: application/json
+
+{
+  //Reviews
+}
+
+###
+
+PUT {{MoviesBackend_HostAddress}}/api/Reviews
+
+###
+
+DELETE {{MoviesBackend_HostAddress}}/api/reviews/{{id}}
+
+###------------------------> Sources
+
+@Id=8
+GET {{MoviesBackend_HostAddress}}/api/sources/{{Id}}
+
+###
+
+PUT {{MoviesBackend_HostAddress}}/api/sources/{{id}}
+Content-Type: application/json
+
+{
+  //MovSources
+}
+
+###
+
+DELETE {{MoviesBackend_HostAddress}}/api/sources/{{id}}
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/sources
+Content-Type: application/json
+
+{
+  //MovSources
+}
+
+###----------> Users
+
+GET {{MoviesBackend_HostAddress}}/api/users
+
+###
+
+@Id=3
+GET {{MoviesBackend_HostAddress}}/api/users/{{Id}}
+
+###
+
+POST {{MoviesBackend_HostAddress}}/api/users
+Content-Type: application/json
+
+{
+  //Users
+}
+
+###
+
+DELETE {{MoviesBackend_HostAddress}}/api/users/{{id}}
+
+###
+
+PUT {{MoviesBackend_HostAddress}}/api/users/{{id}}
+Content-Type: application/json
+
+{
+  //Users
+}
+
+###
+
