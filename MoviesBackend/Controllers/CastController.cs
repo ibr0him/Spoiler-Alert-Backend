@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesBackend.Context;
+using MoviesBackend.DTOs;
 using MoviesBackend.Entities;
 
 namespace MoviesBackend.Controllers
@@ -32,17 +33,33 @@ namespace MoviesBackend.Controllers
 
             return Ok(castList);
         }
-        [HttpPost] // api/cast
-        public IActionResult AddCast([FromBody] Cast newCast)
+        [HttpPost("{id}")] // api/cast
+        public IActionResult AddCast([FromBody] List<AddingCastDTO> newCastList, int id)
         {
-            if (!Db.Movies.Any(m => m.Id == newCast.MovieId))
+            
+            if (!Db.Movies.Any(m => m.Id == id))
                 return NotFound(new { message = "Movie not found" });
 
-            Db.Cast.Add(newCast);
+            // Convert the DTOs to Cast entities
+            var newCast = newCastList.Select(c => new Cast
+            {
+                Name = c.Name,
+                ImgURL = c.ImgURL,
+                MovieId = id // Assign the movie ID from the route
+            }).ToList();
+
+            // Add the new cast to the database
+            Db.Cast.AddRange(newCast);
             Db.SaveChanges();
 
-            return Ok(new { message = "Cast added", castId = newCast.Id });
+            return Ok(new
+            {
+                message = "Cast members added successfully",
+                count = newCast.Count,
+                movieId = id
+            });
         }
+
         [HttpDelete("{id}")] // api/cast/5
         public IActionResult DeleteCast(int id)
         {

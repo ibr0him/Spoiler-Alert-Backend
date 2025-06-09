@@ -11,8 +11,8 @@
         public int UserId { get; set; }
 
         // Navigation properties
-        public Movie Movie { get; set; }
-        public Users User { get; set; }
+        public Movie Movie { get; set; } 
+        public Users User { get; set; } 
 
     }
 }

@@ -40,7 +40,7 @@ namespace MoviesBackend
 
             app.UseAuthorization();
 
-            app.UseCors("AllowLocalhost3000");
+            app.UseCors(); //using DefaultPolicy
             app.MapControllers();
 
             app.Run();

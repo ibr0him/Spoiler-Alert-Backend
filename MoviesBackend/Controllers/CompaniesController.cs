@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoviesBackend.Context;
+using MoviesBackend.DTOs;
 using MoviesBackend.Entities;
 
 namespace MoviesBackend.Controllers
@@ -32,15 +33,30 @@ namespace MoviesBackend.Controllers
         }
 
         // POST: api/companies
-        [HttpPost]
-        public IActionResult AddCompany(ProductionCompaines newCompany)
+        [HttpPost("{id}")]
+        public IActionResult AddCompany(int id,List<AddingCompanyDTO> newCompany)
         {
-            if (newCompany == null)
-                return BadRequest(new { message = "Invalid company data." });
+            if (!Db.Movies.Any(m => m.Id == id))
+                return NotFound(new { message = "Movie not found." });
 
-            Db.ProductionCompaines.Add(newCompany);
+            // Convert the DTOs to ProductionCompaines entities
+            var companies = newCompany.Select(c => new ProductionCompaines
+            {
+                Name = c.Name,
+                ImgURL = c.ImgURL,
+                MovieId = id // Assign the movie ID from the route
+            }).ToList();
+
+            // Add the new companies to the database
+            Db.ProductionCompaines.AddRange(companies);
             Db.SaveChanges();
-            return Ok(new { message = "Company added successfully." });
+            return Ok(new
+            {
+                message = "Companies added successfully",
+                count = companies.Count,
+                movieId = id
+            });
+
         }
 
         // PUT: api/companies/5

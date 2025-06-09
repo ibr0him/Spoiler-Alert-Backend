@@ -15,7 +15,7 @@ namespace MoviesBackend.Controllers
         {
             Db = _Db;
         }
-        [HttpGet]// GET: api/Reviews
+        [HttpGet]// GET: api/reviews
         public IActionResult GetAll()
         {
             var reviews = Db.Reviews
@@ -28,6 +28,7 @@ namespace MoviesBackend.Controllers
             {
                 reviewsDetails.Add(new ReviewDetails
                 {
+                    Id = review.Id,
                     Review = review.Review,
                     Rating = review.Rating,
                     MovieTitle = review.Movie.Title,
@@ -37,31 +38,41 @@ namespace MoviesBackend.Controllers
             return Ok(reviewsDetails);
         }
 
-        // POST: api/Reviews
+        // POST: api/reviews
         [HttpPost]
-        public IActionResult AddReview([FromBody] Reviews newReview)
+        public IActionResult AddReview([FromBody] AddReviewDTO InputReview)
         {
-            if (newReview == null)
-                return BadRequest("Review is null");
+           if(InputReview == null)
+                return BadRequest("Invalid review data");
+
+            var newReview = new Reviews
+            {
+                Review = InputReview.Review,
+                Rating = InputReview.Rating,
+                MovieId = InputReview.MovieId,
+                UserId =  InputReview.UserId
+            };
 
             Db.Reviews.Add(newReview);
             Db.SaveChanges();
-            return Ok(new { message = "Review added successfully" });
+            return Ok(new
+            {
+                message = "Review added successfully",
+                id = newReview.Id
+            });
         }
 
         // PUT: api/Reviews/5
         [HttpPut("{id}")]
-        public IActionResult UpdateReview(int id, [FromBody] Reviews updatedReview)
+        public IActionResult UpdateReview(int id, [FromBody] UpdateReviewDTO updatedReview)
         {
             var review = Db.Reviews.FirstOrDefault(r => r.Id == id);
             if (review == null)
                 return NotFound("Review not found");
 
-            // Update fields (avoid updating navigation properties here)
-            review.Review = updatedReview.Review;
-            review.Rating = updatedReview.Rating;
-            review.MovieId = updatedReview.MovieId;
-            review.UserId = updatedReview.UserId;
+           review.Review = updatedReview.Review;
+           review.Rating = updatedReview.Rating;
+
 
             Db.SaveChanges();
             return Ok(new { message = "Review updated successfully" });

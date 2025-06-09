@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MoviesBackend.Context;
 using MoviesBackend.DTOs;
 using MoviesBackend.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoviesBackend.Controllers
 {
@@ -15,60 +16,60 @@ namespace MoviesBackend.Controllers
         {
             Db = _Db;
         }
-        // GET: api/Users
-        [HttpGet]
-        public IActionResult GetAll()
+        
+        [HttpPost("login")] // Post: api/Users/Login
+        public IActionResult GetUserByEmailPassword([FromBody] LoginRequest request)
         {
-            var users = Db.Users
+            var user = Db.Users
                 .Include(u => u.Reviews)
                 .ThenInclude(r => r.Movie)
+                .FirstOrDefault(u => u.Email == request.Email && u.Password == request.Password);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            var UserDTO = new
+            {
+                user.Id,
+                user.Email,
+                user.Password,
+                user.Name,
+                user.isAdmin,
+            };
+
+            var Reviews = Db.Reviews
+                .Include(r => r.Movie)
+                .ThenInclude(m => m.MovSources)
+                .Where(r => r.UserId == user.Id)
+                .Select(r => new
+                {
+                    Id = r.Id,
+                    Review = r.Review,
+                    Rating = r.Rating,
+                    MovieTitle = r.Movie.Title,
+                    LanscapeImage = r.Movie.MovSources.Img1
+                })
                 .ToList();
 
-            var UserDTO = users.Select(u => new
-            {
-                u.Id,
-                u.Name,
-                u.Email,
-                u.isAdmin,
-            }).ToList();
-            return Ok(UserDTO);
-        }
-        [HttpGet("{id}")]
-        public IActionResult GetUserReviews(int id) { 
-            
-            var Reviews = Db.Reviews
-            .Include(r => r.Movie)
-            .Include(r => r.User)
-            .Where(r => r.UserId == id)
-            .Select(r => new ReviewDetails
-            {
-                Review = r.Review,
-                Rating = r.Rating,
-                MovieTitle = r.Movie.Title,
-                UserName = r.User.Name
-            })
-            .ToList();
-
-            //return Ok(Reviews);
-            return Ok(Reviews);
-
+            return Ok(new { UserDTO.Id, UserDTO.Email, UserDTO.Password, UserDTO.Name, UserDTO.isAdmin, Reviews });
         }
 
-
-        // POST: api/Users
-        [HttpPost]
+        [HttpPost("register")] // POST: api/Users/Register
         public IActionResult AddUser([FromBody] Users newUser)
         {
             if (newUser == null)
                 return BadRequest("User is null");
+            
+            if( Db.Users.FirstOrDefault(u=>u.Email==newUser.Email) != null )
+                return BadRequest("User with this email already exists");
 
             Db.Users.Add(newUser);
             Db.SaveChanges();
             return Ok(new { message = "User added successfully" });
         }
 
-        // PUT: api/Users/5
-        [HttpPut("{id}")]
+        
+        [HttpPut("{id}")]  // PUT: api/Users/5
         public IActionResult UpdateUser(int id, [FromBody] Users updatedUser)
         {
             var user = Db.Users.FirstOrDefault(u => u.Id == id);
@@ -83,8 +84,7 @@ namespace MoviesBackend.Controllers
             return Ok(new { message = "User updated successfully" });
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}")] // DELETE: api/Users/5
         public IActionResult DeleteUser(int id)
         {
             var user = Db.Users.FirstOrDefault(u => u.Id == id);

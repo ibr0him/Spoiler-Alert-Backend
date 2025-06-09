@@ -9,6 +9,6 @@
         public string Password { get; set; }
         public string Email { get; set; }
 
-        public ICollection<Reviews> Reviews { get; set; }
+        public ICollection<Reviews> Reviews { get; set; } = new List<Reviews>();
     }
 }

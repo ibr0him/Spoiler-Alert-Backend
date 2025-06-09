@@ -5,7 +5,7 @@ GET {{MoviesBackend_HostAddress}}/api/movie
 
 ###
 
-@id=1
+@id=13
 GET {{MoviesBackend_HostAddress}}/api/movie/{{id}}
 
 ###
@@ -14,7 +14,12 @@ POST {{MoviesBackend_HostAddress}}/api/movie
 Content-Type: application/json
 
 {
-  //Movie
+  "title":"Avengers Endgame",
+  "posterImage":"https://www.komar.de/media/catalog/product/cache/5/image/9df78eab33525d08d6e5fb8d27136e95/import/api-v1.1-file-public-files-pim-assets-97-ad-84-62-6284ad972eff292d45ce1a2e-images-2e-44-f8-65-65f8442ee95865a273d91872-4-4127-avengers-endgame-movie-poster-ecirgb-xl-web.jpg",
+  "genres":"Action,Horror",
+  "overview":"The fourth installment in the Avengers saga is the culmination of 22 interconnected Marvel films and the climax of a journey.",
+  "rating":"8.2",
+  "releaseDate":"2025-05-05"
 }
 
 ###
@@ -37,12 +42,12 @@ GET {{MoviesBackend_HostAddress}}/api/cast/{{Id}}
 
 ###
 
-PUT {{MoviesBackend_HostAddress}}/api/cast/{{id}}
+PUT {{MoviesBackend_HostAddress}}/api/cast/62
 Content-Type: application/json
-
 {
-  //Cast
+
 }
+
 
 ###
 
@@ -50,12 +55,23 @@ DELETE {{MoviesBackend_HostAddress}}/api/cast/{{id}}
 
 ###
 
-POST {{MoviesBackend_HostAddress}}/api/cast
+POST {{MoviesBackend_HostAddress}}/api/cast/62
 Content-Type: application/json
 
-{
-  //Cast
-}
+[
+  {
+    "name":"Robert Downey Jr.",
+    "imgURL":"https://m.media-amazon.com/images/M/MV5BNzg1MTUyNDYxOF5BMl5BanBnXkFtZTgwNTQ4MTE2MjE@._V1_FMjpg_UY2048_.jpg"
+
+  },
+  {
+    "name":"Chris Evans",
+    "imgURL":"https://m.media-amazon.com/images/M/MV5BNzQ0YWM1ODEtZDFkYy00MGJhLTkwZDUtMzVkZjljODU3ZTRmXkEyXkFqcGc@._V1_FMjpg_UY6000_.jpg"
+  }
+]
+
+###
+
 
 ###------------------------> Companies
 @Id=1
@@ -71,6 +87,24 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{MoviesBackend_HostAddress}}/api/companies/62
+Content-Type: application/json
+
+[
+  {
+    "name":"Marvel Studios",
+    "imgURL":"https://i.imgur.com/zVKjblJ.png"
+
+  },
+  {
+    "name":"Walt Disney",
+    "imgURL":"https://images.seeklogo.com/logo-png/15/2/walt-disney-pictures-logo-png_seeklogo-151338.png"
+  }
+]
+
+###
+
 
 DELETE {{MoviesBackend_HostAddress}}/api/companies/{{id}}
 
@@ -93,12 +127,21 @@ POST {{MoviesBackend_HostAddress}}/api/reviews
 Content-Type: application/json
 
 {
-  //Reviews
+  "review":"Awesome Movie2",
+  "rating":"8",
+  "movieId":"1",
+  "userId":"5"
 }
 
 ###
 
-PUT {{MoviesBackend_HostAddress}}/api/Reviews
+PUT {{MoviesBackend_HostAddress}}/api/reviews/104
+Content-Type: application/json
+
+{
+  "review":"So Nice",
+  "rating":"8"
+}
 
 ###
 
@@ -128,39 +171,37 @@ POST {{MoviesBackend_HostAddress}}/api/sources
 Content-Type: application/json
 
 {
-  //MovSources
+  "movieId":"62",
+  "img1":"https://wallpapersok.com/images/high/marvel-avengers-endgame-zelp3pylvtvtnwi8.jpg",
+  "img2":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfJKbB3sxG-8nXLpxZQzNFOJ_UifQWlmwlJw&s",
+  "video":"https://www.youtube.com/watch?v=TcMBFSGVi1c"
 }
 
 ###----------> Users
 
-GET {{MoviesBackend_HostAddress}}/api/users
-
-###
-
-@Id=3
-GET {{MoviesBackend_HostAddress}}/api/users/{{Id}}
-
-###
-
-POST {{MoviesBackend_HostAddress}}/api/users
+POST {{MoviesBackend_HostAddress}}/api/users/login
 Content-Type: application/json
 
 {
-  //Users
+  "Email":"Ibrahim@gmail.com",
+  "Password":"med22003344"
 }
 
 ###
 
-DELETE {{MoviesBackend_HostAddress}}/api/users/{{id}}
-
-###
-
-PUT {{MoviesBackend_HostAddress}}/api/users/{{id}}
+POST {{MoviesBackend_HostAddress}}/api/users/register
 Content-Type: application/json
 
 {
-  //Users
+  "Name":"Ibrahim Hassan",
+  "Email":"IbrahimHassen@gmail.com",
+  "Password":"med22003344",
+  "isAdmin": false
 }
 
 ###
+
+
+
+
 

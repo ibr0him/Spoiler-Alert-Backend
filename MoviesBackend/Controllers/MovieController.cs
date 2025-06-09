@@ -42,52 +42,65 @@ namespace MoviesBackend.Controllers
                 .Include(m => m.MovSources)
                 .Include(m => m.ProductionCompaines)
                 .Include(m => m.Reviews)
-                .ThenInclude(r => r.User)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefault(m => m.Id == id);
-            
+
             if (movie == null)
                 return NotFound();
 
-            MovieDetails movieDetails = new MovieDetails { 
-                Cast = movie.Cast.Select(c => new { 
+            MovieDetails movieDetails = new MovieDetails
+            {
+                Cast = movie.Cast?.Select(c => new
+                {
                     c.Name,
                     c.ImgURL
                 }).ToList<object>(),
 
-                ProductionCompanies = movie.ProductionCompaines.Select(
-                    pc => new {
-                        pc.Name, pc.ImgURL 
-                    }
-                    ).ToList<object>(),
-
-                Sources = movie.MovSources.Select(
-                    ms => new
-                    {
-                        ms.Img1,
-                        ms.Img2,
-                        ms.Video
-                    }
-                    ).ToList<object>(),
-                Reviews = movie.Reviews.Select( c => new ReviewDetails
+                ProductionCompanies = movie.ProductionCompaines?.Select(pc => new
                 {
-                    Review=c.Review,
+                    pc.Name,
+                    pc.ImgURL
+                }).ToList<object>(),
+
+                Sources = movie.MovSources != null ? new
+                {
+                    Img1 = movie.MovSources.Img1,
+                    Img2 = movie.MovSources.Img2,
+                    Video = movie.MovSources.Video
+                } : null,
+
+                Reviews = movie.Reviews?.Select(c => new ReviewDetails
+                {
+                    Id = c.Id,
+                    Review = c.Review,
                     Rating = c.Rating,
-                    MovieTitle= c.Movie.Title,
-                    UserName = c.User.Name
+                    MovieTitle = c.Movie?.Title,
+                    UserName = c.User?.Name
                 }).ToList()
-
-
             };
-               
+
             return Ok(movieDetails);
         }
 
+
         [HttpPost] //api/Movie --> Post
-        public IActionResult AddMovie([FromBody] Movie Mov1)
+        public IActionResult AddMovie([FromBody] AddingMovDTO Mov1)
         {
-            Db.Movies.Add(Mov1);
+            if (Mov1 == null)
+                return BadRequest(new { message = "Invalid movie data" });
+            // Assuming AddingMovDTO has properties that match Movie
+            var movie = new Movie
+            {
+                Title = Mov1.Title,
+                Genres = Mov1.Genres,
+                PosterImage = Mov1.PosterImage,
+                Overview = Mov1.Overview,
+                Rating = Mov1.Rating,
+                ReleaseDate = Mov1.ReleaseDate
+            };
+            Db.Movies.Add(movie);
             Db.SaveChanges();
-            return Ok(new { message = "Added Successfully" });
+            return Ok(new { message = "Added Successfully" , id=movie.Id });
         }
 
         [HttpDelete("{id}")]

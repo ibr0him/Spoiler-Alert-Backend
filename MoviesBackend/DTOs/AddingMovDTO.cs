@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MoviesBackend.Entities
+namespace MoviesBackend.DTOs
 {
-    public class Movie
+    public class AddingMovDTO
     {
-      
-        public int Id { get; set; }
-
         public string PosterImage { get; set; }
         public string Title { get; set; }
         public string Genres { get; set; }
@@ -17,11 +14,5 @@ namespace MoviesBackend.Entities
         public string Rating { get; set; }
 
         public DateOnly ReleaseDate { get; set; }
-
-        // Navigation properties
-        public ICollection<Cast> Cast { get; set; } 
-        public MovSources MovSources { get; set; }
-        public ICollection<ProductionCompaines> ProductionCompaines { get; set; }
-        public ICollection<Reviews> Reviews { get; set; } 
     }
 }
